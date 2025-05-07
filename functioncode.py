@@ -73,7 +73,7 @@ def credit_limit_constraint(*args):
   
   def semester_limit(*args):
     semester_counts = Counter(args)
-    return all(count <= 5 for count in semester_counts.values())
+    return all(count <= 6 for count in semester_counts.values())
   
   course_planning.addConstraint(semester_limit, courses)
 
@@ -81,6 +81,6 @@ def get_solutions(number_entered):
   
   solution_iter = course_planning.getSolutionIter()
   solutions = list(islice(solution_iter,number_entered))
-  
+
   return(solutions)
 
