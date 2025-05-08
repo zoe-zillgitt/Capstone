@@ -10,11 +10,11 @@ def home():
 
     schedule_dictionary = {'Freshman Fall':[], 'Freshman Spring': [], 'Sophomore Fall': [], 'Sophomore Spring': [], 'Junior Fall': [], 'Junior Spring':[], 'Senior Fall': [], 'Senior Spring': []}
     course_planning = Problem()
-    creating_variables(get_courses())
-    prereq_constraints(get_prereqs())
-    singleclass_requirements_constraints(get_cs_requirements())
-    multiclass_requirements_constraints(get_cs_requirements())
-    credit_limit_constraint()
+    creating_variables(get_courses('https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/DA_course_rotation.json'))
+    prereq_constraints(get_prereqs('https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/DA_prerequisites.json'))
+    singleclass_requirements_constraints(get_requirements('https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/DA_major_requirements.json'))
+    multiclass_requirements_constraints(get_requirements('https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/DA_major_requirements.json'))
+    credit_limit_constraint('https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/DA_course_rotation.json')
     solutions = get_solutions(1)
 
     for x in solutions[0]:

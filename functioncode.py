@@ -6,25 +6,30 @@ from constraint import SomeInSetConstraint
 from collections import Counter
 from itertools import islice
 
+
+def reset_course_planning():
+    global course_planning
+    course_planning = Problem()
+
 course_planning = Problem()
 
-def get_courses():
+def get_courses(url):
 
-    course_rotation_url = 'https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/course_rotation.json'
+    course_rotation_url = url
     course_rotation_data = requests.get(course_rotation_url).json()
     
     return (course_rotation_data)
 
-def get_cs_requirements():
+def get_requirements(url):
 
-    cs_requirements_url = 'https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/cs_major_requirements.json'
-    cs_requirements_data = requests.get(cs_requirements_url).json()
+    requirements_url = url
+    requirements_data = requests.get(requirements_url).json()
 
-    return(cs_requirements_data)
+    return(requirements_data)
 
-def get_prereqs():
+def get_prereqs(url):
 
-    prerequisites_url = 'https://raw.githubusercontent.com/ericmanley/S24-CS143AI/main/data/prerequisites_simplified.json'
+    prerequisites_url = url
     prerequisites_data = requests.get(prerequisites_url).json()
 
     return(prerequisites_data)
@@ -36,7 +41,11 @@ def creating_variables(class_list):
     for semester in class_list[i]['terms_offered']:
       semester_list.append(semester)
       if len(class_list[i]['terms_offered']) == len(semester_list):
-        course_planning.addVariable(course,semester_list)
+        try:
+          print(course)
+          course_planning.addVariable(course,semester_list)
+        except ValueError as e:
+          print(f"Skipping duplicate or invalid variable '{course}': {e}")
 
 def prereq_constraint(prereq, course):
     return prereq < course
@@ -51,7 +60,8 @@ def prereq_constraints(prereq_list):
 def singleclass_requirements_constraints(requirements_list):
   for i in range(len(requirements_list)):
     if len(requirements_list[i]['courses']) == 1:
-      course_planning.addConstraint(InSetConstraint,[requirements_list[i]['courses'][0]])
+      course = requirements_list[i]['courses'][0]
+      course_planning.addConstraint(SomeInSetConstraint([202510, 202520, 202610, 202620, 202710, 202720, 202810, 202820], n=requirements_list[i]['num_required'],exact=True),[course])
 
 def multiclass_requirements_constraints(requirements_list):
   for i in range(len(requirements_list)):
@@ -61,20 +71,21 @@ def multiclass_requirements_constraints(requirements_list):
         courses.append(requirements_list[i]['courses'][j])
       course_planning.addConstraint(SomeInSetConstraint([202510, 202520, 202610, 202620, 202710, 202720, 202810, 202820], n=requirements_list[i]['num_required'],exact=False),courses)
 
-def credit_limit_constraint(*args):
+def credit_limit_constraint(url):
   semester_list = [202510,202520,202610,202620,202710,202720,202810,202820]
-  course_rotation_url = 'https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/course_rotation.json'
+  course_rotation_url = url
   course_rotation_data = requests.get(course_rotation_url).json()
   courses = []
-  
+
   for i in range(len(course_rotation_data)):
     course = course_rotation_data[i]['course']
     courses.append(course)
-  
+  print(courses)
+
   def semester_limit(*args):
     semester_counts = Counter(args)
     return all(count <= 6 for count in semester_counts.values())
-  
+
   course_planning.addConstraint(semester_limit, courses)
 
 def get_solutions(number_entered):
