@@ -2,3 +2,5 @@ Flask
 requests
 simplejson
 python-constraint
+collections
+itertools
