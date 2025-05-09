@@ -15,22 +15,19 @@ course_planning = Problem()
 
 def get_courses(url):
 
-    course_rotation_url = url
-    course_rotation_data = requests.get(course_rotation_url).json()
+    course_rotation_data = requests.get(url).json()
     
     return (course_rotation_data)
 
 def get_requirements(url):
 
-    requirements_url = url
-    requirements_data = requests.get(requirements_url).json()
+    requirements_data = requests.get(url).json()
 
     return(requirements_data)
 
 def get_prereqs(url):
 
-    prerequisites_url = url
-    prerequisites_data = requests.get(prerequisites_url).json()
+    prerequisites_data = requests.get(url).json()
 
     return(prerequisites_data)
 
@@ -42,7 +39,6 @@ def creating_variables(class_list):
       semester_list.append(semester)
       if len(class_list[i]['terms_offered']) == len(semester_list):
         try:
-          print(course)
           course_planning.addVariable(course,semester_list)
         except ValueError as e:
           print(f"Skipping duplicate or invalid variable '{course}': {e}")
@@ -71,16 +67,12 @@ def multiclass_requirements_constraints(requirements_list):
         courses.append(requirements_list[i]['courses'][j])
       course_planning.addConstraint(SomeInSetConstraint([202510, 202520, 202610, 202620, 202710, 202720, 202810, 202820], n=requirements_list[i]['num_required'],exact=False),courses)
 
-def credit_limit_constraint(url):
+def credit_limit_constraint(course_dictionary):
   semester_list = [202510,202520,202610,202620,202710,202720,202810,202820]
-  course_rotation_url = url
-  course_rotation_data = requests.get(course_rotation_url).json()
   courses = []
 
-  for i in range(len(course_rotation_data)):
-    course = course_rotation_data[i]['course']
-    courses.append(course)
-  print(courses)
+  for key, value in course_dictionary:
+    courses.append(key)
 
   def semester_limit(*args):
     semester_counts = Counter(args)

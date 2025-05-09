@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home Page</title>
+    <title>Schedule Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://use.typekit.net/szh3fro.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <div class="topnav">
     <a class="active" href="#home">Home</a>
-    <a href="#news">News</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
 </div>
 <style>
 .topnav {
@@ -44,26 +41,36 @@
     color: #2b5797
 }
 </style>
-<body>
-    <h1 class="my-header">Welcome to Drake University's Schedule Maker</h1>
-    <div class="container">
-        <h3 class="sub-heading">Here is your recommended schedule:</h3>
-        <table class="table table-bordered table-striped mt-3">
-            <thead class="thead">
-                <tr>
-                    <th>Semester</th>
-                    <th>Classes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {%for semester in schedule %}
-                    <tr>
-                        <td>{{ semester }}</td>
-                        <td>{{ schedule[semester] | join(', ') }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<h1 class="my-header">Drake University's Computer Science and Math Department Schedule Maker</h1>
+<form method="POST">
+    <div class="mb-3">
+        <label for="major-select" class="form-label">Choose Major</label>
+        <select id="major-select" name="major" class="form-select">
+            <option value="">--Please choose an option--</option>
+            <option value="CS">Computer Science</option>
+            <option value="AI">Artificial Intelligence</option>
+            <option value="DA">Data Analytics</option>
+            <option value="MATH">Math</option>
+        </select>
     </div>
-</body>
+    <div class="mb-3">
+        <label for="2nd-major-select" class="form-label">Choose Second Major</label>
+        <select id="2nd-major-select" name="2nd-major" class="form-select">
+            <option value="">None</option>
+            <option value="CS">Computer Science</option>
+            <option value="AI">Artificial Intelligence</option>
+            <option value="DA">Data Analytics</option>
+            <option value="MATH">Math</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="minor-select" class="form-label">Choose Minor</label>
+        <select id="minor-select" name="minor" class="form-select">
+            <option value="">None</option>
+            <option value="CYB">Cyber Security</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Schedule Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://use.typekit.net/szh3fro.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<div class="topnav">
+    <a href="/">Home</a>
+    <a class="active" href="/schedule">Schedule Page</a>
+</div>
+<style>
+.topnav {
+  background-color: #2b5797;
+  overflow: hidden;
+}
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+.topnav a.active {
+  background-color: #5bbad5;
+  color: white;
+}
+.thead {
+    background-color: #2b5797;
+    color: white;
+}
+.my-header {
+    color: #5bbad5;
+}
+.sub-heading {
+    color: #2b5797
+}
+</style>
+<table class="table table-bordered table-striped mt-3">
+    <thead class="thead">
+        <tr>
+            <th>Semester</th>
+            <th>Classes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for semester in schedule %}
+            <tr>
+                <td>{{ semester }}</td>
+                <td>{{ schedule[semester] | join(', ') }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
