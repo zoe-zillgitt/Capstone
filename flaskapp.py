@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash,session
 from functioncode import *
+from collections import OrderedDict
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  
@@ -14,7 +15,6 @@ def home():
 
         reset_course_planning()
         course_planning = Problem()
-        schedule_dictionary = {'Freshman Fall':[], 'Freshman Spring': [], 'Sophomore Fall': [], 'Sophomore Spring': [], 'Junior Fall': [], 'Junior Spring':[], 'Senior Fall': [], 'Senior Spring': []}
 
         if major == '':
             return render_template('home.html')
@@ -46,6 +46,7 @@ def home():
                 multiclass_requirements_constraints(get_requirements(f'https://raw.githubusercontent.com/zoe-zillgitt/CapstoneJson/main/{minor}_minor_requirements.json'))
         
         credit_limit_constraint(course_planning._variables)
+        schedule_dictionary = OrderedDict([('Freshman Fall', []),('Freshman Spring', []),('Sophomore Fall', []),('Sophomore Spring', []),('Junior Fall', []),('Junior Spring', []),('Senior Fall', []),('Senior Spring', [])])
         solutions = get_solutions(1)
 
         for x in solutions[0]:

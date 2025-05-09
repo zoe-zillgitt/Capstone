@@ -49,11 +49,18 @@
             <th>Classes</th>
         </tr>
     </thead>
+    {% set ordered_semesters = [
+        'Freshman Fall', 'Freshman Spring',
+        'Sophomore Fall', 'Sophomore Spring',
+        'Junior Fall', 'Junior Spring',
+        'Senior Fall', 'Senior Spring'
+    ] %}
+    
     <tbody>
-        {%for semester in schedule %}
+        {% for semester in ordered_semesters %}
             <tr>
                 <td>{{ semester }}</td>
-                <td>{{ schedule[semester] | join(', ') }}</td>
+                <td>{{ schedule.get(semester, []) | join(', ') }}</td>
             </tr>
         {% endfor %}
     </tbody>
